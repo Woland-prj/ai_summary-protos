@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package pyai;
+
+option go_package = "pyai.v1;pyaiv1";
+import "google/protobuf/duration.proto";
+
+service DiarizationService {
+  rpc GetSpeackerTimestamps (SpeackerTimestampsRequest) returns (SpeackerTimestampsRespones);
+}
+
+message SpeackerTimestampsRequest {
+  string audio_path = 1; // Path to audio file
+}
+
+message SpeackerTimestampsRespones {
+  map<int32, string> speacker_map = 1; // Map of fragments speackers. Key - fragment index, value = speacker
+  map<int32, google.protobuf.Duration> duration_map = 2; // Map of fragments duration. Key - fragment index, value = duration
+}
+
+service TranscribationService {
+  rpc ConvertSpeachToText (ConvertSpeachToTextRequest) returns (ConvertSpeachToTextRespones);
+}
+
+message ConvertSpeachToTextRequest {
+  string audio_path = 1; // Path to audio file
+}
+
+message ConvertSpeachToTextRespones {
+  string text = 1; // Text from speach
+}
+
+service SummaryService {
+  rpc GetFragmentSummary (GetFragmentSummaryRequest) returns (SummaryRespones);
+  rpc GetFileSummary (GetFileSummaryRequest) returns (SummaryRespones);
+}
+
+message GetFragmentSummaryRequest {
+  string base_text = 1; // Text for summary
+}
+
+message GetFileSummaryRequest {
+  message Fragment {
+    string speacker = 1;
+    string summary = 2;
+  }
+  repeated Fragment fragment = 3;
+}
+
+message SummaryRespones {
+  string summarized_text = 1;
+}
