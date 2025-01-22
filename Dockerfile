@@ -40,4 +40,4 @@ CMD ["sh", "-c", "mkdir -p gen/go gen/python && \
   python3 -m grpc_tools.protoc -Iproto \
   --python_out=./gen/python \
   --grpc_python_out=./gen/python \
-  proto/pyai/pyai.proto"]
+  proto/pyai/pyai.proto && touch gen/python/pyai/__init__.py"]
